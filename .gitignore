@@ -1,0 +1,22 @@
+# Backend (Python)
+backend/.venv
+backend/__pycache__
+backend/**/__pycache__
+backend/*.pyc
+backend/.pytest_cache
+backend/.ruff_cache
+backend/htmlcov
+backend/.coverage
+backend/data/
+
+# Frontend build output (frontend/.gitignore covers node_modules, dist, etc.)
+frontend/coverage
+
+# Secrets - see README for how ANTHROPIC_API_KEY is provided instead
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+.idea

@@ -16,12 +16,15 @@ def _home(**overrides) -> Home:
 
 
 def test_old_poorly_insulated_gas_home_gets_high_priority_recommendations() -> None:
+    # Arrange
     home = _home(
         year_built=1970, heating_type=HeatingType.GAS, insulation_quality=InsulationQuality.POOR
     )
 
+    # Act
     result = MockLLMClient().generate_advice(home)
 
+    # Assert
     assert any(rec.priority == "high" for rec in result.recommendations)
     categories = {rec.category for rec in result.recommendations}
     assert "insulation" in categories
@@ -29,18 +32,22 @@ def test_old_poorly_insulated_gas_home_gets_high_priority_recommendations() -> N
 
 
 def test_new_efficient_home_gets_no_high_priority_recommendations() -> None:
+    # Arrange
     home = _home(
         year_built=2022,
         heating_type=HeatingType.HEAT_PUMP,
         insulation_quality=InsulationQuality.EXCELLENT,
     )
 
+    # Act
     result = MockLLMClient().generate_advice(home)
 
+    # Assert
     assert all(rec.priority != "high" for rec in result.recommendations)
 
 
 def test_result_always_has_between_three_and_six_recommendations() -> None:
+    # Act & Assert (every insulation x heating combination)
     for insulation in InsulationQuality:
         for heating in HeatingType:
             home = _home(heating_type=heating, insulation_quality=insulation)
@@ -49,6 +56,8 @@ def test_result_always_has_between_three_and_six_recommendations() -> None:
 
 
 def test_summary_mentions_no_api_key_fallback() -> None:
+    # Act
     result = MockLLMClient().generate_advice(_home())
 
+    # Assert
     assert "Mock advice" in result.summary

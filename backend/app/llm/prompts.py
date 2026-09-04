@@ -52,8 +52,11 @@ RECOMMENDATION_JSON_SCHEMA = {
         },
         "recommendations": {
             "type": "array",
-            "minItems": 3,
-            "maxItems": 6,
+            # Anthropic's structured-output schema subset doesn't support `maxItems`
+            # on arrays at all, and only accepts `minItems` of 0 or 1 (verified
+            # against the live API - anything else is a 400 invalid_request_error).
+            # The 3-6 count is enforced via SYSTEM_PROMPT instead.
+            "minItems": 1,
             "items": {
                 "type": "object",
                 "properties": {

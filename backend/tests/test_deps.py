@@ -14,43 +14,70 @@ def _clear_cache():
 
 
 def test_auto_mode_uses_mock_when_no_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Arrange
     monkeypatch.setattr(
         "app.api.deps.get_settings",
         lambda: Settings(llm_mode="auto", anthropic_api_key=None),
     )
 
+    # Act
     client = get_llm_client()
 
+    # Assert
     assert isinstance(client, MockLLMClient)
     assert advice_source_label(client) == "mock"
 
 
 def test_auto_mode_uses_live_client_when_api_key_present(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Arrange
     monkeypatch.setattr(
         "app.api.deps.get_settings",
         lambda: Settings(llm_mode="auto", anthropic_api_key="sk-test"),
     )
 
+    # Act
     client = get_llm_client()
 
+    # Assert
     assert isinstance(client, AnthropicLLMClient)
     assert advice_source_label(client) == "llm"
 
 
 def test_forced_mock_mode_ignores_api_key(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Arrange
     monkeypatch.setattr(
         "app.api.deps.get_settings",
         lambda: Settings(llm_mode="mock", anthropic_api_key="sk-test"),
     )
 
-    assert isinstance(get_llm_client(), MockLLMClient)
+    # Act
+    client = get_llm_client()
+
+    # Assert
+    assert isinstance(client, MockLLMClient)
 
 
 def test_forced_live_mode_without_api_key_raises(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Arrange
     monkeypatch.setattr(
         "app.api.deps.get_settings",
         lambda: Settings(llm_mode="live", anthropic_api_key=None),
     )
 
+    # Act & Assert
     with pytest.raises(RuntimeError):
         get_llm_client()
+
+
+def test_forced_live_mode_with_api_key_uses_anthropic(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Arrange
+    monkeypatch.setattr(
+        "app.api.deps.get_settings",
+        lambda: Settings(llm_mode="live", anthropic_api_key="sk-test"),
+    )
+
+    # Act
+    client = get_llm_client()
+
+    # Assert
+    assert isinstance(client, AnthropicLLMClient)

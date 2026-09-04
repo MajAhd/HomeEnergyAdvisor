@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # No key -> we fall back to the deterministic mock client automatically, so the
     # app runs out of the box without credentials (see app/api/deps.py).
     anthropic_api_key: str | None = None
-    anthropic_model: str = "claude-opus-5"
+    anthropic_model: str = "claude-haiku-4-5-20251001"
     # Explicit override: "auto" (default) picks mock iff no API key is configured,
     # "mock" and "live" force one or the other regardless of the key. A Literal
     # (rather than a plain str) so a typo'd or unrecognized value fails fast at

@@ -22,8 +22,8 @@ def _summary(home: Home) -> str:
     return (
         f"This {home.size_sqm:.0f} m² {age} home, built in {home.year_built}, uses "
         f"{home.heating_type.value.replace('_', ' ')} heating with "
-        f"{home.insulation_quality.value} insulation. [Mock advice - no LLM API key "
-        "configured; see README for how to enable live recommendations.]"
+        f"{home.insulation_quality.value} insulation. [Mock advice - no live LLM "
+        "provider available; see README for how to enable live recommendations.]"
     )
 
 

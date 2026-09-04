@@ -66,7 +66,7 @@ create a root-level `.env` file (already gitignored) with
 `ANTHROPIC_API_KEY=sk-ant-...` — Compose loads that automatically for variable
 substitution. This is Compose's own `.env` mechanism, separate from (and not to be
 confused with) a Python `.env` loaded by the app itself, which this project
-deliberately doesn't use — see Assumptions & Tradeoffs.
+deliberately doesn't use — see Assumptions & Tradeoffs in `doc/dev.md`.
 
 Force a specific mode regardless of whether a key is set with `LLM_MODE=mock` or
 `LLM_MODE=live` (default `auto`).
@@ -90,7 +90,7 @@ npm run dev
 ### Tests
 
 ```bash
-# Backend - 42 tests, ~96% coverage
+# Backend - 43 tests, ~97% coverage
 cd backend
 poetry run pytest --cov=app --cov-report=term-missing
 poetry run ruff check .   # lint
